@@ -3,7 +3,9 @@ package com.Spring.security.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,21 +32,25 @@ public class SecurityConfig {
 //
 //	}
 	@Bean
-	 UserDetailsService userDetailsService() {
+	public UserDetailsService userDetailsService() {
 		return myUserDetailsService;
 	}
 
 	@Bean
-	 PasswordEncoder passwordEncoder() {
+	public  PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
 	@Bean
-	AuthenticationProvider authenticationProvider() {
+	public AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider provider= new DaoAuthenticationProvider();
 		provider.setUserDetailsService(myUserDetailsService);
 		provider.setPasswordEncoder(passwordEncoder());
 		return provider;
+	}
+	@Bean
+	public AuthenticationManager authenticationManager() {
+		return new ProviderManager(authenticationProvider());
 	}
 
 //	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -65,9 +71,8 @@ public class SecurityConfig {
 				.authorizeHttpRequests(registry -> {
 //			registry.requestMatchers("/").permitAll();
 			
-			registry.requestMatchers("/home").permitAll();
+			registry.requestMatchers("/home","/authenticate","/register").permitAll();
 			registry.requestMatchers("/user").hasRole("USER");
-			registry.requestMatchers("/register").permitAll();
 			registry.requestMatchers("/admin/**").hasRole("ADMIN");
 			
 			registry.anyRequest().authenticated();
@@ -76,6 +81,7 @@ public class SecurityConfig {
 	}
 	
 	
+
 
 	
 
