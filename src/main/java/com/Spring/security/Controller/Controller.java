@@ -34,6 +34,13 @@ public class Controller {
 		return "hello Admin";
 	}
 	
+	
+	@GetMapping("/user")
+	public String user() {
+		System.out.println("user");
+		return "hello user";
+	}
+	
 	@PostMapping("/register")
 	public String createUser(@RequestBody MyUser user) {
 		System.out.println("register");
