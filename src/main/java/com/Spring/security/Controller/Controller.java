@@ -1,6 +1,10 @@
 package com.Spring.security.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Spring.security.Model.MyUser;
+import com.Spring.security.MyUserDetailsService.MyUserDetailsService;
 import com.Spring.security.repository.MyUserRepository;
+import com.Spring.security.webToken.JwtService;
+import com.Spring.security.webToken.LoginForm;
 
 @RestController
 public class Controller {
@@ -16,6 +23,13 @@ public class Controller {
 	MyUserRepository myUserRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	@Autowired
+	private JwtService jwtService;
+	@Autowired
+	private MyUserDetailsService myUserDetailsService;
+	
 
 	@GetMapping("/")
 	public String sayHello() {
@@ -46,8 +60,21 @@ public class Controller {
 		System.out.println("register");
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		System.out.println(user);
-		myUserRepository.save(user);
-		return "success";
+		MyUser usersaved = myUserRepository.save(user);
+		return "success "+usersaved;
+	}
+	
+	@PostMapping("/authenticate")
+	public String authenticateAndGetToken(@RequestBody LoginForm loginForm) {
+		System.out.println("signup");
+		Authentication authenticate  = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.username(), loginForm.password()));
+		if(authenticate.isAuthenticated()) {
+			return jwtService.generateToken(myUserDetailsService.loadUserByUsername(loginForm.username()));
+		}else {
+			throw new UsernameNotFoundException("Not found "+loginForm.username());
+		}
+		
+		
 	}
 
 }
