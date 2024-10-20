@@ -12,6 +12,7 @@ import javax.crypto.SecretKey;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -43,6 +44,28 @@ public class JwtService {
 		byte[] decodedKey = Base64.getDecoder().decode(SECRET);
 		return Keys.hmacShaKeyFor(decodedKey);
 		 
+	}
+	
+	public  String extractUsername(String jwt) {
+		Claims claims = Jwts.parser()
+		.verifyWith(generateKey())
+		.build()
+		.parseSignedClaims(jwt)
+		.getPayload();
+		return claims.getSubject();
+	}
+	public  Claims getClaims(String jwt) {
+		return Jwts.parser()
+		.verifyWith(generateKey())
+		.build()
+		.parseSignedClaims(jwt)
+		.getPayload();
+	}
+
+	public boolean isTokenValid(String jwt) {
+		// TODO Auto-generated method stub
+		Claims claims=getClaims(jwt);
+		return claims.getExpiration().after(Date.from(Instant.now()));
 	}
 
 }
