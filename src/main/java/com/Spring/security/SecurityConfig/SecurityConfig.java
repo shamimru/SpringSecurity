@@ -20,7 +20,7 @@ import com.Spring.security.MyUserDetailsService.MyUserDetailsService;
 public class SecurityConfig {
 	
 	@Autowired
-	MyUserDetailsService myUserRepository;
+	MyUserDetailsService myUserDetailsService;
 
 //	public UserDetailsService userDetailsService() {
 //		UserDetails user = User.withUsername("user").password(passwordEncoder().encode("123")).roles("USER").build();
@@ -31,19 +31,18 @@ public class SecurityConfig {
 //	}
 	@Bean
 	 UserDetailsService userDetailsService() {
-		return myUserRepository;
+		return myUserDetailsService;
 	}
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	 PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
 	@Bean
 	AuthenticationProvider authenticationProvider() {
-		
 		DaoAuthenticationProvider provider= new DaoAuthenticationProvider();
-		provider.setUserDetailsService(myUserRepository);
+		provider.setUserDetailsService(myUserDetailsService);
 		provider.setPasswordEncoder(passwordEncoder());
 		return provider;
 	}
@@ -67,6 +66,7 @@ public class SecurityConfig {
 //			registry.requestMatchers("/").permitAll();
 			
 			registry.requestMatchers("/home").permitAll();
+			registry.requestMatchers("/user").hasRole("USER");
 			registry.requestMatchers("/register").permitAll();
 			registry.requestMatchers("/admin/**").hasRole("ADMIN");
 			

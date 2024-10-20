@@ -24,14 +24,17 @@ public class MyUserDetailsService implements UserDetailsService{
 		
 		if(user.isPresent()) {
 			var userObj=user.get();
+			System.out.println(userObj.getRole());
+
 			return User.builder()
 					.username(userObj.getUsername())
 					.password(userObj.getPassword())
-					.roles(userObj.getRole())
+					.roles(getRoles(userObj))
 					.build();
 			
 			
 		}else {
+			System.out.println("user not found "+username);
 			throw new UsernameNotFoundException("user not Found with = "+username);
 		}
 	}
