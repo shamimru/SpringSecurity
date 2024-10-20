@@ -14,8 +14,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.Spring.security.MyUserDetailsService.MyUserDetailsService;
+import com.Spring.security.webToken.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +25,9 @@ public class SecurityConfig {
 	
 	@Autowired
 	MyUserDetailsService myUserDetailsService;
+	@Autowired
+
+	JwtAuthenticationFilter jwtAuthenticationFilter;
 
 //	public UserDetailsService userDetailsService() {
 //		UserDetails user = User.withUsername("user").password(passwordEncoder().encode("123")).roles("USER").build();
@@ -77,7 +82,7 @@ public class SecurityConfig {
 			
 			registry.anyRequest().authenticated();
 
-		}).formLogin(form -> form.permitAll()).build();
+		}).formLogin(form -> form.permitAll()).addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class).build();
 	}
 	
 	
