@@ -19,9 +19,7 @@ public class MyUserDetailsService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
 		Optional<MyUser> user = myUserRepository.findByUsername(username);
-		
 		if(user.isPresent()) {
 			var userObj=user.get();
 			System.out.println(userObj.getRole());
@@ -31,8 +29,6 @@ public class MyUserDetailsService implements UserDetailsService{
 					.password(userObj.getPassword())
 					.roles(getRoles(userObj))
 					.build();
-			
-			
 		}else {
 			System.out.println("user not found "+username);
 			throw new UsernameNotFoundException("user not Found with = "+username);

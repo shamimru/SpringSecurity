@@ -20,7 +20,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 	
 	private static final String SECRET="7B2686AED1BDEC158073C3E39E4681C7A6B89532F092A259BDAA1CB08882E2C61E607B74F0975D255687ED86D2E757233AF30CE4F7841175D56D4C7E3FF971C9";
-	private static final long VALIDITY= TimeUnit.MINUTES.toMillis(30);
+	private static final long VALIDITY= TimeUnit.MINUTES.toMillis(1);
 	
 	public String generateToken(UserDetails userDetails) {
 		
