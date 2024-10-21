@@ -1,6 +1,7 @@
 package com.Spring.security.storeProcedured;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,11 @@ public class StoreProceduredService {
     @Transactional
   	public People getByFName(String fname) {
   		return studentStoreProcedureRepo.getByName(fname);
+  	}
+    
+    @Transactional
+  	public List<Map<String, Object>> get3Values(String personId) {
+  		return studentStoreProcedureRepo.get3Values(personId);
   	}
 	
 	

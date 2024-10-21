@@ -1,6 +1,7 @@
 package com.Spring.security.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -114,6 +115,17 @@ public class Controller {
 		return byFName;
 	}
 	
+	@PostMapping("/get3Values/{fname}")
+	public List<Map<String, Object>> get3Values(@PathVariable("fname") String fname){
+		System.out.println("get3Values");
+		List<Map<String, Object>> get3Values = storeProceduredService.get3Values(fname);
+		
+//		for (Map<String, Object> map : get3Values) {
+//			System.out.println(map);
+//		}
+		System.out.println(get3Values);
+		return get3Values;
+	}
 	
 	
 
