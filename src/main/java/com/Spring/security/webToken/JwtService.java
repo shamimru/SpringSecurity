@@ -63,7 +63,6 @@ public class JwtService {
 	}
 
 	public boolean isTokenValid(String jwt) {
-		// TODO Auto-generated method stub
 		Claims claims=getClaims(jwt);
 		return claims.getExpiration().after(Date.from(Instant.now()));
 	}

@@ -32,7 +32,7 @@ public class StoreProceduredService {
   	}
     
     @Transactional
-  	public List<Map<String, Object>> get3Values(String personId) {
+  	public Map<String, Object> get3Values(String personId) {
   		return studentStoreProcedureRepo.get3Values(personId);
   	}
 	

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,10 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Spring.security.Model.MyUser;
 import com.Spring.security.Model.People;
 import com.Spring.security.MyUserDetailsService.MyUserDetailsService;
+import com.Spring.security.email.EmailService;
 import com.Spring.security.repository.MyUserRepository;
 import com.Spring.security.storeProcedured.StoreProceduredService;
 import com.Spring.security.webToken.JwtService;
 import com.Spring.security.webToken.LoginForm;
+
+import jakarta.mail.MessagingException;
 
 @RestController
 public class Controller {
@@ -38,6 +43,8 @@ public class Controller {
 	
 	@Autowired
 	StoreProceduredService storeProceduredService;
+	@Autowired
+	EmailService  emailService;
 
 	@GetMapping("/")
 	public String sayHello() {
@@ -115,16 +122,28 @@ public class Controller {
 		return byFName;
 	}
 	
-	@PostMapping("/get3Values/{fname}")
-	public List<Map<String, Object>> get3Values(@PathVariable("fname") String fname){
+	@PostMapping("/get3Values/{personalId}")
+	public Map<String, Object> get3Values(@PathVariable("personalId") String personalId){
 		System.out.println("get3Values");
-		List<Map<String, Object>> get3Values = storeProceduredService.get3Values(fname);
+		Map<String, Object> get3Values = storeProceduredService.get3Values(personalId);
 		
 //		for (Map<String, Object> map : get3Values) {
 //			System.out.println(map);
 //		}
 		System.out.println(get3Values);
 		return get3Values;
+	}
+	
+	
+	
+	@GetMapping("/sms")
+//	@EventListener(ApplicationReadyEvent.class)
+	public String sendEmail() throws MessagingException {
+		System.out.println("sms started");
+		emailService.sendMailWithAttachement("shamim.ru.pgd@gmail.com", 
+				"hello shamim how are you", "this is free sms", 
+				"/Users/shamim_ahamed/Desktop/sm.png");
+		return "sms is successfully sent ";
 	}
 	
 	

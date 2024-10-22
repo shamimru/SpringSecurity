@@ -19,6 +19,6 @@ public interface StudentStoreProcedureRepo extends JpaRepository<People, String>
 	People getByName(String fname);
 	
 	@Procedure(name="findOnly3Variable")
-	public List<Map<String, Object> >get3Values (String id);
+	public Map<String, Object>get3Values (String id);
 
 }
