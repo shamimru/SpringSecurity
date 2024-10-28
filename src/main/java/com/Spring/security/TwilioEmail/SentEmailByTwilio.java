@@ -16,8 +16,8 @@ import com.sendgrid.helpers.mail.objects.Email;
 
 @Service
 public class SentEmailByTwilio {
-	@Value("${spring.sendgrid.api-key}")
-	private String sendGridApiKey;
+//	@Value("${spring.sendgrid.api-key}")
+//	private String sendGridApiKey;
 	
 	public String sendEmail( EmailDetails emailDetails) throws IOException {
 		EmailInfo fromAddress = emailDetails.getFromAddress();
