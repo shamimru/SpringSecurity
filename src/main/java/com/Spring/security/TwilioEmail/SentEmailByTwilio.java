@@ -1,12 +1,15 @@
 package com.Spring.security.TwilioEmail;
 
-import java.awt.Container;
+import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.Spring.security.TwilioEmail.model.EmailDetails;
 import com.Spring.security.TwilioEmail.model.EmailInfo;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -16,7 +19,7 @@ public class SentEmailByTwilio {
 	@Value("${spring.sendgrid.api-key}")
 	private String sendGridApiKey;
 	
-	public void sendEmail( EmailDetails emailDetails) {
+	public String sendEmail( EmailDetails emailDetails) throws IOException {
 		EmailInfo fromAddress = emailDetails.getFromAddress();
 		Email fromEmail= setEmail(fromAddress.getName(), fromAddress.getEmailAddress());
 		
@@ -26,6 +29,18 @@ public class SentEmailByTwilio {
 		Content content =new Content("text/plain",emailDetails.getEmailBody());
 		
 		Mail email= new Mail(fromEmail,emailDetails.getSubject(), toEmail,content);
+		SendGrid grid=new SendGrid(sendGridApiKey);
+		
+		Request request =new Request();
+		request.setMethod(Method.POST);
+		request.setEndpoint("mail/send");
+		request.setBody(email.build());
+		
+		grid.api(request);
+		
+		return "";
+		
+		
 
 	}
 	
