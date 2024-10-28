@@ -142,7 +142,8 @@ public class Controller {
 		System.out.println("sms started");
 		emailService.sendMailWithAttachement("shamim.ru.pgd@gmail.com", 
 				"hello shamim how are you", "this is free sms", 
-				"/Users/shamim_ahamed/Desktop/sm.png");
+				"/Users/shamim_ahamed/Downloads/a3.jpg");
+		
 		return "sms is successfully sent ";
 	}
 	
