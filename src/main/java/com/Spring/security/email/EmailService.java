@@ -25,6 +25,7 @@ public class EmailService {
 		helper.setTo(toEmail);
 		helper.setText(body);
 		helper.setSubject(subject);
+		helper.setBcc("abc@gmail.com");
 		FileSystemResource fileResource=new FileSystemResource(new File(attachment));
 		helper.addAttachment(fileResource.getFilename(), fileResource);
 		

@@ -1,13 +1,11 @@
 package com.Spring.security;
 
-import javax.crypto.SecretKey;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import io.jsonwebtoken.Jwts;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"com.Spring.security","com.Spring.security.ReceiveMail"}) 
 public class SpringSecurityApplication {
 
 
