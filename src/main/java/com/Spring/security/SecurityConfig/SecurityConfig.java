@@ -76,7 +76,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(registry -> {
 //			registry.requestMatchers("/").permitAll();
 			
-			registry.requestMatchers("/home","/authenticate","/sms/**", "/register","/getPeople","/getPeople2","/getByFname/**","/get3Values/**","/twilioMail","/fetch-emails").permitAll();
+			registry.requestMatchers("/", "/home","/authenticate","/sms/**", "/register","/getPeople","/getPeople2","/getByFname/**","/get3Values/**","/twilioMail","/fetch-emails").permitAll();
 			registry.requestMatchers("/user").hasRole("USER");
 			registry.requestMatchers("/admin/**").hasRole("ADMIN");
 			
